@@ -97,7 +97,7 @@ export default function ERPApp({ onLogout }) {
             </div>
             <div className="h-8 w-[1px] bg-slate-100 mx-2" />
             <p className="text-[12px] font-condensed font-black tracking-widest text-slate-500">
-              22 APR 2024 • 20:44
+              22 APR 2024 • 20:53 V1.1
             </p>
           </div>
         </header>
