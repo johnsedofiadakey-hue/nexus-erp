@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, ArrowRight, ShieldCheck, Droplets, Sparkles, Phone, Mail, Instagram } from 'lucide-react';
+import { ShoppingCart, ArrowRight, ShieldCheck, Droplets, Sparkles, Phone, Mail, Camera } from 'lucide-react';
 import logo from '../../assets/logo.png';
 import handwashImg from '../../assets/handwash.png';
 
@@ -171,7 +171,7 @@ export default function PublicSite({ onLoginClick }) {
                 Empowering healthy living through innovative manufacturing and premium personal care solutions since 2018.
               </p>
               <div className="flex items-center gap-4">
-                {[Instagram, Mail, Phone].map((Icon, i) => (
+                {[Camera, Mail, Phone].map((Icon, i) => (
                   <div key={i} className="w-10 h-10 rounded-full border border-slate-700 flex items-center justify-center hover:border-deva-400 hover:text-deva-400 transition-all cursor-pointer">
                     <Icon size={18} />
                   </div>
