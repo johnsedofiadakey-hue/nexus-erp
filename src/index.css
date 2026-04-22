@@ -38,4 +38,22 @@
   .nx-input {
     @apply w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-deva-500/20 focus:border-deva-500 outline-none transition-all;
   }
+
+  .app-glass {
+    @apply bg-white/80 backdrop-blur-lg border-slate-200/50;
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

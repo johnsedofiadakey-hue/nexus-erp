@@ -1,5 +1,6 @@
-import React from 'react';
-import { ShoppingCart, ArrowRight, ShieldCheck, Droplets, Sparkles, Phone, Mail, Camera } from 'lucide-react';
+import { ShoppingCart, ArrowRight, ShieldCheck, Droplets, Sparkles, Phone, Mail, Camera, Menu, X } from 'lucide-react';
+import { useState } from 'react';
+import { cn } from '../../utils/cn';
 import logo from '../../assets/logo.png';
 import handwashImg from '../../assets/handwash.png';
 
@@ -23,15 +24,17 @@ const products = [
 ];
 
 export default function PublicSite({ onLoginClick }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Deva" className="h-10 w-auto" />
+            <img src={logo} alt="Deva" className="h-8 md:h-10 w-auto" />
             <div className="hidden sm:block">
-              <h1 className="font-condensed font-bold text-xl tracking-tight text-slate-800">BERRACK</h1>
+              <h1 className="font-condensed font-bold text-lg md:text-xl tracking-tight text-slate-800">BERRACK</h1>
               <p className="text-[10px] uppercase tracking-widest text-slate-400 -mt-1 font-bold">Manufacturing Co. Ltd</p>
             </div>
           </div>
@@ -42,67 +45,101 @@ export default function PublicSite({ onLoginClick }) {
             <a href="#contact" className="hover:text-deva-500 transition-colors">Distribution</a>
           </div>
 
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={onLoginClick}
-              className="nx-btn-secondary !py-2 !px-5 text-sm"
-            >
-              ERP Portal
-            </button>
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="hidden sm:flex items-center gap-4">
+              <button 
+                onClick={onLoginClick}
+                className="nx-btn-secondary !py-2 !px-5 text-sm"
+              >
+                ERP Portal
+              </button>
+            </div>
             <button className="nx-btn-primary !py-2 !px-5 text-sm flex items-center gap-2">
               <ShoppingCart size={16} />
-              Catalog
+              <span className="hidden xs:inline">Catalog</span>
             </button>
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 text-slate-600 active:scale-95 transition-transform"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={cn(
+          "md:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-100 transition-all duration-300 overflow-hidden",
+          isMenuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+        )}>
+          <div className="p-6 space-y-6">
+            <div className="flex flex-col gap-4 text-lg font-bold text-slate-800 text-left">
+              <a href="#products" onClick={() => setIsMenuOpen(false)}>Products</a>
+              <a href="#about" onClick={() => setIsMenuOpen(false)}>Our Quality</a>
+              <a href="#contact" onClick={() => setIsMenuOpen(false)}>Distribution</a>
+            </div>
+            <div className="pt-6 border-t border-slate-50">
+               <button 
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    onLoginClick();
+                  }}
+                  className="w-full nx-btn-secondary flex items-center justify-center gap-2"
+                >
+                  <ShieldCheck size={18} />
+                  Staff ERP Portal
+                </button>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="pt-40 pb-24 px-6 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-deva-50 border border-deva-100 rounded-full text-deva-600 text-xs font-bold uppercase tracking-widest">
+      <section className="pt-32 md:pt-40 pb-16 md:pb-24 px-4 md:px-6 max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
+          <div className="space-y-6 md:space-y-8 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-deva-50 border border-deva-100 rounded-full text-deva-600 text-[10px] md:text-xs font-bold uppercase tracking-widest mx-auto lg:mx-0">
               <Sparkles size={14} />
               Redefining Hygiene in Ghana
             </div>
-            <h2 className="text-6xl md:text-7xl font-condensed font-black leading-[0.9] text-slate-900">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-condensed font-black leading-[0.9] text-slate-900">
               PURITY IN EVERY <span className="text-deva-500 underline decoration-deva-100 underline-offset-8">DROP.</span>
             </h2>
-            <p className="text-lg text-slate-500 leading-relaxed max-w-md">
+            <p className="text-base md:text-lg text-slate-500 leading-relaxed max-w-md mx-auto lg:mx-0">
               Berrack Manufacturing brings you **Deva**, a premium line of personal care products formulated for maximum protection and skin wellness.
             </p>
-            <div className="flex items-center gap-4 pt-4">
-              <button className="nx-btn-primary h-14 !px-8 text-md flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+              <button className="w-full sm:w-auto nx-btn-primary h-14 !px-8 text-md flex items-center justify-center gap-3">
                 Explore Products
                 <ArrowRight size={20} />
               </button>
               <div className="flex -space-x-3">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-400">
+                  <div key={i} className="w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-slate-100 flex items-center justify-center text-[10px] md:text-xs font-bold text-slate-400">
                     JD
                   </div>
                 ))}
-                <div className="pl-6 pt-3 text-xs font-medium text-slate-400">
-                  Trusted by 5,000+ Ghanaian homes
+                <div className="pl-4 pt-2 text-[10px] md:text-xs font-medium text-slate-400 max-w-[120px] text-left">
+                  Trusted by 5,000+ Ghanaian families
                 </div>
               </div>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative px-4 sm:px-0">
             <div className="absolute -inset-4 bg-deva-100/50 rounded-[3rem] blur-3xl -z-10 animate-pulse" />
             <img 
               src={handwashImg} 
               alt="Deva Handwash" 
-              className="w-full h-auto rounded-[2.5rem] shadow-2xl transform hover:scale-[1.02] transition-transform duration-500"
+              className="w-full h-auto rounded-[2rem] md:rounded-[2.5rem] shadow-2xl transform hover:scale-[1.02] transition-transform duration-500"
             />
-            <div className="absolute bottom-10 -left-10 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 max-w-[200px] animate-bounce">
+            <div className="absolute -bottom-6 -left-2 md:bottom-10 md:-left-10 bg-white p-4 md:p-6 rounded-2xl shadow-xl border border-slate-100 max-w-[160px] md:max-w-[200px] animate-bounce">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
-                  <ShieldCheck size={18} />
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                  <ShieldCheck size={14} />
                 </div>
-                <span className="text-[10px] font-black uppercase text-slate-400">Clinical Grade</span>
+                <span className="text-[8px] md:text-[10px] font-black uppercase text-slate-400">Clinical Grade</span>
               </div>
-              <p className="text-sm font-bold text-slate-800">99.9% Bacteria Protection Guaranteed</p>
+              <p className="text-xs md:text-sm font-bold text-slate-800 text-left line-clamp-2">99.9% Bacteria Protection Guaranteed</p>
             </div>
           </div>
         </div>
