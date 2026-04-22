@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #ffffff;
+    --nav: #ffffff;
+    --surf: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --primary: #0ea5e9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+  }
+
+  body {
+    @apply bg-white text-slate-900 font-sans antialiased;
+  }
+}
+
+@layer components {
+  .nx-card {
+    @apply bg-white border border-slate-200 rounded-xl shadow-sm;
+  }
+  
+  .nx-btn-primary {
+    @apply px-6 py-2.5 bg-deva-500 text-white font-bold rounded-lg hover:bg-deva-600 transition-all shadow-md shadow-deva-500/20 active:scale-95;
+  }
+
+  .nx-btn-secondary {
+    @apply px-6 py-2.5 bg-white text-slate-700 border border-slate-200 font-bold rounded-lg hover:bg-slate-50 transition-all active:scale-95;
+  }
+
+  .nx-input {
+    @apply w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-deva-500/20 focus:border-deva-500 outline-none transition-all;
+  }
+}
