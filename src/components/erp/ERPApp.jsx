@@ -3,7 +3,9 @@ import {
   BarChart3, Users, Package, Factory, 
   Settings, LogOut, Search, Bell, 
   TrendingUp, Activity, FlaskConical, Beaker,
-  CheckCircle2, AlertTriangle, Clock, Droplets
+  CheckCircle2, AlertTriangle, Clock, Droplets,
+  Fingerprint, CalendarRange, Wallet, UserCheck, Plane, 
+  CalendarCheck, ShieldAlert, Award, Briefcase
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import logo from '../../assets/logo.png';
@@ -107,6 +109,8 @@ export default function ERPApp({ onLogout }) {
           <div className="max-w-7xl mx-auto space-y-10">
             {activeTab === 'Dashboard' ? (
               <DashboardView />
+            ) : activeTab === 'Personnel' ? (
+              <PersonnelView />
             ) : (
               <div className="flex flex-col items-center justify-center py-40 text-center space-y-4">
                 <div className="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center text-slate-300">
@@ -140,7 +144,7 @@ function DashboardView() {
       </div>
 
       {/* KPI Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
         <StatCard 
           label="Liters Produced" 
           value="1,240L" 
@@ -285,7 +289,7 @@ function StatCard({ label, value, trend, sub, icon: Icon, warning }) {
       </div>
       <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">{label}</p>
       <h4 className="text-4xl font-condensed font-black text-slate-900 mt-1">{value}</h4>
-      <p className="text-xs font-semibold text-slate-400 mt-4 flex items-center gap-2">
+      <p className="text-xs font-semibold text-slate-400 mt-4 flex items-center gap-2 text-left">
         {warning && <AlertTriangle size={14} className="text-amber-500 animate-pulse" />}
         {sub}
       </p>
@@ -296,7 +300,7 @@ function StatCard({ label, value, trend, sub, icon: Icon, warning }) {
 function QCAlert({ batch, type, status, value, time, error }) {
   return (
     <div className={cn(
-      "p-5 rounded-2xl border flex items-center gap-4 transition-all hover:bg-white cursor-pointer",
+      "p-5 rounded-2xl border flex items-center gap-4 transition-all hover:bg-white cursor-pointer text-left",
       error ? "bg-red-50/50 border-red-100" : "bg-white border-slate-100 shadow-sm"
     )}>
       <div className={cn(
@@ -315,6 +319,414 @@ function QCAlert({ batch, type, status, value, time, error }) {
           {status}
         </p>
       </div>
+    </div>
+  );
+}
+
+function PersonnelView() {
+  const [subTab, setSubTab] = useState('Employees');
+
+  return (
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 text-left">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <h2 className="text-3xl font-condensed font-black text-slate-900 leading-none uppercase">Personnel Management</h2>
+          <p className="text-slate-400 font-medium mt-2">Workforce Analytics • Shift Control • Payroll</p>
+        </div>
+        <div className="flex bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200">
+          {['Employees', 'Attendance', 'Shifts', 'Leave', 'Payroll'].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setSubTab(tab)}
+              className={cn(
+                "px-5 py-2 text-xs font-black uppercase tracking-widest rounded-xl transition-all",
+                subTab === tab ? "bg-deva-500 text-white shadow-md shadow-deva-500/20" : "text-slate-400 hover:text-slate-600"
+              )}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="min-h-[500px]">
+        {subTab === 'Employees' && <EmployeeSubView />}
+        {subTab === 'Attendance' && <AttendanceSubView />}
+        {subTab === 'Shifts' && <ShiftSubView />}
+        {subTab === 'Leave' && <LeaveSubView />}
+        {subTab === 'Payroll' && <PayrollSubView />}
+      </div>
+    </div>
+  );
+}
+
+function EmployeeSubView() {
+  const employees = [
+    { id: 'STF-001', name: 'Akwasi Mensah', role: 'Production Supervisor', dept: 'Soap Production', shift: 'Morning', status: 'Active' },
+    { id: 'STF-004', name: 'Kofi Owusu', role: 'Quality Analyst', dept: 'QC Labs', shift: 'Morning', status: 'On Leave' },
+    { id: 'STF-009', name: 'Ama Serwaa', role: 'Machine Operator', dept: 'Packaging', shift: 'Night', status: 'Active' },
+    { id: 'STF-012', name: 'Ekow Baidoo', role: 'Chemist', dept: 'R&D', shift: 'Morning', status: 'Active' },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h3 className="font-bold text-slate-800">Staff Registry</h3>
+        <button className="nx-btn-primary !py-2 !px-4 text-xs">+ Add Employee</button>
+      </div>
+      <div className="nx-card overflow-hidden border-none shadow-xl">
+        <table className="w-full text-left">
+          <thead className="bg-slate-50 border-b border-slate-100">
+            <tr>
+              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">ID</th>
+              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Full Name</th>
+              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Dept</th>
+              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Shift</th>
+              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-50">
+            {employees.map(emp => (
+              <tr key={emp.id} className="hover:bg-slate-50/50 transition-colors cursor-pointer group">
+                <td className="px-8 py-6 font-bold text-slate-400">{emp.id}</td>
+                <td className="px-8 py-6">
+                  <div className="font-bold text-slate-900 group-hover:text-deva-500 transition-colors">{emp.name}</div>
+                  <div className="text-[10px] text-slate-400 font-medium">{emp.role}</div>
+                </td>
+                <td className="px-8 py-6 text-sm font-medium">{emp.dept}</td>
+                <td className="px-8 py-6">
+                   <div className="flex items-center gap-2">
+                     <Clock size={14} className="text-slate-300" />
+                     <span className="text-xs font-bold text-slate-600">{emp.shift}</span>
+                   </div>
+                </td>
+                <td className="px-8 py-6">
+                  <span className={cn(
+                    "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
+                    emp.status === 'Active' ? "bg-green-100 text-green-600" : "bg-amber-100 text-amber-600"
+                  )}>
+                    {emp.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function AttendanceSubView() {
+  return (
+    <div className="grid lg:grid-cols-3 gap-8 text-left">
+      <div className="lg:col-span-2 space-y-6">
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-slate-800">Biometric Feed (Live)</h3>
+          <div className="flex items-center gap-2 text-[10px] font-black text-green-500 bg-green-50 px-3 py-1 rounded-full border border-green-100">
+             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+             TERMINAL ONLINE • B-101
+          </div>
+        </div>
+        <div className="nx-card overflow-hidden border-none shadow-xl p-0">
+          <table className="w-full text-left">
+            <thead className="bg-slate-50 border-b border-slate-100">
+              <tr>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Timestamp</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Employee</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Event</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {[
+                { time: '08:02 AM', name: 'Akwasi Mensah', event: 'Clock-In', status: 'On Time' },
+                { time: '08:15 AM', name: 'Kwame Boahen', event: 'Clock-In', status: '15m Late', late: true },
+                { time: '08:45 AM', name: 'Ama Lu', event: 'Clock-In', status: 'On Time' },
+                { time: '05:00 PM', name: 'Seth Ofori', event: 'Clock-Out', status: 'Completed' },
+              ].map((log, i) => (
+                <tr key={i} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-8 py-5 flex items-center gap-3">
+                    <Fingerprint size={16} className="text-deva-400" />
+                    <span className="text-sm font-bold text-slate-600">{log.time}</span>
+                  </td>
+                  <td className="px-8 py-5 font-bold text-slate-900">{log.name}</td>
+                  <td className="px-8 py-5 text-xs font-bold text-slate-400">{log.event}</td>
+                  <td className="px-8 py-5">
+                    <span className={cn(
+                      "text-[10px] font-black uppercase",
+                      log.late ? "text-red-500" : "text-green-500"
+                    )}>
+                      {log.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="space-y-6">
+        <h3 className="font-bold text-slate-800">Attendance KPIs</h3>
+        <div className="grid gap-4">
+          <div className="nx-card p-6 border-none shadow-lg">
+             <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Present Today</p>
+             <h4 className="text-3xl font-condensed font-black mt-1">94%</h4>
+             <p className="text-[10px] text-green-500 font-bold mt-2">+2% from yesterday</p>
+          </div>
+          <div className="nx-card p-6 border-none shadow-lg bg-red-50/30">
+             <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Late Arrivals</p>
+             <h4 className="text-3xl font-condensed font-black mt-1">08</h4>
+             <p className="text-[10px] text-red-500 font-bold mt-2">Requires Review</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ShiftSubView() {
+  return (
+    <div className="space-y-8 text-left">
+       <div className="flex items-center justify-between">
+          <h3 className="font-bold text-slate-800">Operational Shifts (Next 24h)</h3>
+          <div className="flex gap-2">
+             <button className="nx-btn-secondary !py-2 !px-4 text-[10px]">Print Roster</button>
+             <button className="nx-btn-primary !py-2 !px-4 text-[10px]">Auto-Rotate</button>
+          </div>
+       </div>
+       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ShiftCard title="Morning Core" time="06:00 - 14:00" staffed="12/12" status="Full" />
+          <ShiftCard title="Afternoon Flow" time="14:00 - 22:00" staffed="08/12" status="Understaffed" warning />
+          <ShiftCard title="Night Production" time="22:00 - 06:00" staffed="10/12" status="Allocated" />
+       </div>
+       <div className="nx-card p-8 border-none shadow-xl relative overflow-hidden bg-white">
+          <div className="absolute top-0 right-0 w-32 h-full bg-deva-50/30 -mr-16 skew-x-12" />
+          <div className="flex items-center gap-4 mb-6">
+             <CalendarRange className="text-deva-500" />
+             <h4 className="font-bold py-2">Upcoming Rotations</h4>
+          </div>
+          <div className="space-y-4">
+             {[
+               { date: 'Mon, 24 Apr', team: 'Blue Team', action: 'Night → Morning', reason: 'Routine Rotation' },
+               { date: 'Tue, 25 Apr', team: 'Gold Team', action: 'Off → Night', reason: 'Production Surge' },
+             ].map((rot, i) => (
+                <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
+                   <div>
+                      <p className="text-xs font-black text-slate-400 uppercase">{rot.date}</p>
+                      <p className="font-bold text-slate-800">{rot.team}: {rot.action}</p>
+                   </div>
+                   <span className="text-[10px] font-black uppercase text-deva-500">{rot.reason}</span>
+                </div>
+             ))}
+          </div>
+       </div>
+    </div>
+  );
+}
+
+function ShiftCard({ title, time, staffed, status, warning }) {
+  return (
+    <div className={cn(
+      "nx-card p-6 border-none shadow-lg transition-all hover:scale-[1.02] text-left",
+      warning ? "bg-amber-50/50 ring-1 ring-amber-100" : "bg-white"
+    )}>
+       <div className="flex justify-between items-start mb-4">
+          <h4 className="font-black text-lg font-condensed">{title}</h4>
+          <span className={cn(
+            "text-[10px] font-black uppercase px-2 py-1 rounded-md",
+            warning ? "text-amber-600 bg-amber-100" : "text-green-600 bg-green-100"
+          )}>{status}</span>
+       </div>
+       <div className="space-y-4">
+          <div className="flex items-center gap-3 text-slate-400">
+             <Clock size={16} />
+             <span className="text-sm font-bold">{time}</span>
+          </div>
+          <div className="space-y-2">
+             <div className="flex justify-between text-[10px] font-black uppercase text-slate-400">
+                <span>Staffing</span>
+                <span>{staffed}</span>
+             </div>
+             <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div 
+                  className={cn("h-full rounded-full", warning ? "bg-amber-500" : "bg-green-500")} 
+                  style={{ width: (parseInt(staffed.split('/')[0])/parseInt(staffed.split('/')[1])*100) + '%' }} 
+                />
+             </div>
+          </div>
+       </div>
+    </div>
+  );
+}
+
+function LeaveSubView() {
+  return (
+    <div className="space-y-8 text-left">
+       <div className="flex items-center justify-between">
+          <h3 className="font-bold text-slate-800">Leave Requests & Availability</h3>
+          <button className="nx-btn-primary !py-2 !px-4 text-[10px]">Policy Config</button>
+       </div>
+       <div className="nx-card overflow-hidden border-none shadow-xl">
+          <table className="w-full text-left">
+            <thead className="bg-slate-50 border-b border-slate-100">
+              <tr>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Requester</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Period</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Type</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
+                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {[
+                { name: 'Kofi Owusu', dates: '22 - 29 Apr', type: 'Annual Leave', days: '7 Days', status: 'Pending Review' },
+                { name: 'Sarah Addo', dates: '25 - 26 Apr', type: 'Sick Leave', days: '2 Days', status: 'Review Needed', warning: true },
+              ].map((req, i) => (
+                <tr key={i}>
+                  <td className="px-8 py-6">
+                    <div className="font-bold text-slate-900">{req.name}</div>
+                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Quality Analyst</div>
+                  </td>
+                  <td className="px-8 py-6 text-sm font-bold text-slate-600">
+                    {req.dates} <span className="text-slate-400 ml-2">({req.days})</span>
+                  </td>
+                  <td className="px-8 py-6">
+                    <span className="flex items-center gap-2 text-xs font-bold">
+                       <Plane size={14} className="text-slate-300" />
+                       {req.type}
+                    </span>
+                  </td>
+                  <td className="px-8 py-6">
+                    <span className={cn(
+                      "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
+                      req.warning ? "bg-red-100 text-red-600" : "bg-deva-100 text-deva-600"
+                    )}>
+                      {req.status}
+                    </span>
+                  </td>
+                  <td className="px-8 py-6">
+                    <div className="flex gap-2">
+                       <button className="w-8 h-8 rounded-lg bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-colors shadow-lg shadow-green-500/20">
+                          <CheckCircle2 size={16} />
+                       </button>
+                       <button className="w-8 h-8 rounded-lg bg-slate-100 text-slate-400 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                          <LogOut size={16} className="rotate-180" />
+                       </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+       </div>
+    </div>
+  );
+}
+
+function PayrollSubView() {
+  return (
+    <div className="space-y-8 text-left">
+       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+             <div>
+                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Payroll Month</p>
+                <h3 className="text-2xl font-black font-condensed">APRIL 2024</h3>
+             </div>
+             <div className="h-10 w-[1px] bg-slate-200" />
+             <div>
+                <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Total Valuation</p>
+                <h3 className="text-2xl font-black font-condensed text-deva-600">GHS 84,250.00</h3>
+             </div>
+          </div>
+          <div className="flex gap-3">
+             <button className="nx-btn-secondary !py-2 !px-5 text-xs flex items-center gap-2">
+                <Wallet size={16} />
+                Generate Vouchers
+             </button>
+             <button className="nx-btn-primary !py-2 !px-5 text-xs flex items-center gap-2">
+                Process Month
+                <ArrowRight size={16} />
+             </button>
+          </div>
+       </div>
+
+       <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 nx-card overflow-hidden border-none shadow-xl">
+             <table className="w-full text-left">
+                <thead className="bg-slate-50 border-b border-slate-100">
+                   <tr>
+                      <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Employee</th>
+                      <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Basic Pay</th>
+                      <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Total Ded.</th>
+                      <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Net Pay</th>
+                      <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
+                   </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                   {[
+                     { name: 'Akwasi Mensah', basic: '5,500', ded: '825', net: '4,675', status: 'Verified' },
+                     { name: 'Ama Serwaa', basic: '3,200', ded: '480', net: '2,720', status: 'Pending' },
+                     { name: 'Ekow Baidoo', basic: '7,800', ded: '1,170', net: '6,630', status: 'Verified' },
+                   ].map((pay, i) => (
+                      <tr key={i} className="hover:bg-slate-50/50 transition-colors">
+                        <td className="px-8 py-6 font-bold text-slate-900">{pay.name}</td>
+                        <td className="px-8 py-6 font-bold font-condensed tracking-wide text-slate-600">GHS {pay.basic}</td>
+                        <td className="px-8 py-6 font-bold font-condensed tracking-wide text-red-400">GHS {pay.ded}</td>
+                        <td className="px-8 py-6 font-black font-condensed tracking-tight text-slate-900 border-l border-slate-50">GHS {pay.net}</td>
+                        <td className="px-8 py-6">
+                           <span className={cn(
+                             "text-[10px] font-black uppercase",
+                             pay.status === 'Verified' ? "text-green-500" : "text-amber-500"
+                           )}>{pay.status}</span>
+                        </td>
+                      </tr>
+                   ))}
+                </tbody>
+             </table>
+          </div>
+          <div className="space-y-6 text-left">
+             <h3 className="font-bold text-slate-800">Statutory Compliance</h3>
+             <div className="nx-card p-6 border-none shadow-lg space-y-6">
+                <div>
+                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-3">Statutory Estimates (Ghana)</p>
+                  <div className="space-y-3">
+                     <DeductionRow label="SSNIT Tier 1 & 2" percent="13.5%" total="GHS 11,373" />
+                     <DeductionRow label="PAYE (Income Tax)" percent="Est. 12%" total="GHS 10,110" />
+                  </div>
+                </div>
+                <div className="pt-6 border-t border-slate-100">
+                   <div className="flex items-center gap-3 text-amber-500">
+                      <ShieldAlert size={18} />
+                      <p className="text-xs font-bold leading-tight">Tax filing deadline: May 15th, 2024</p>
+                   </div>
+                </div>
+             </div>
+             <div className="p-6 bg-slate-900 rounded-2xl text-white space-y-4">
+                <div className="flex justify-between items-start">
+                   <Award className="text-deva-400" />
+                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Efficiency Bonus</span>
+                </div>
+                <div>
+                   <h5 className="font-bold">Team Performance Pool</h5>
+                   <p className="text-[10px] text-slate-400 font-medium">GHS 5,000 to be distributed based on yield efficiency.</p>
+                </div>
+                <button className="w-full py-2 bg-white/10 hover:bg-white/20 transition-all rounded-xl text-[10px] font-black uppercase">Distribute Now</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  );
+}
+
+function DeductionRow({ label, percent, total }) {
+  return (
+    <div className="flex items-center justify-between">
+       <div>
+          <p className="text-xs font-bold text-slate-700">{label}</p>
+          <p className="text-[10px] text-slate-400 font-medium">{percent}</p>
+       </div>
+       <p className="text-sm font-black font-condensed">{total}</p>
     </div>
   );
 }
