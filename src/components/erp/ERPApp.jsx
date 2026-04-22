@@ -3,7 +3,7 @@ import {
   BarChart3, Users, Package, Factory, 
   Settings, LogOut, Search, Bell, 
   TrendingUp, Activity, FlaskConical, Beaker,
-  CheckCircle2, AlertTriangle, Clock
+  CheckCircle2, AlertTriangle, Clock, Droplets
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import logo from '../../assets/logo.png';
